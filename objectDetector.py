@@ -15,8 +15,8 @@ class Detector:
 
         self.net = cv2.dnn_DetectionModel(self.modelPath, self.configPath)
         self.net.setInputSize(320, 320)
-        self.net.setInputScale(1.0/127.5)
-        self.net.setInputMean((127.5, 127.5, 127.5))
+        self.net.setInputScale(1.0/200)
+        self.net.setInputMean((200, 200, 200))
         self.net.setInputSwapRB(True)
 
         self.readClasses()
@@ -47,7 +47,7 @@ class Detector:
             confidences = list(np.array(confidences).reshape(1, -1)[0])
             confidences = list(map(float, confidences))
 
-            cornerIDs = cv2.dnn.NMSBoxes(corners, confidences, score_threshold = 0.5, nms_threshold = 0.2)
+            cornerIDs = cv2.dnn.NMSBoxes(corners, confidences, score_threshold = 0.6, nms_threshold = 0.2)
 
             if len(cornerIDs) != 0:
                 for i in range(0, len(cornerIDs)):
@@ -61,10 +61,10 @@ class Detector:
 
                     x, y, w, h = corner
 
+                    ####################
                     cv2.rectangle(image, (x,y), (x+w, y+h), color = (255, 255, 255), thickness = 1)
                     cv2.putText(image, displayText, (x, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, classColor, 2)
 
-                    ####################
                     lineWidth = min(int(w * 0.3), int(h * 0.3))
                     lineThickness = 4
 
@@ -80,6 +80,7 @@ class Detector:
                     cv2.line(image, (x + w,y + h), (x + w - lineWidth, y + h), classColor, lineThickness)
                     cv2.line(image, (x + w,y + h), (x + w,y + h - lineWidth), classColor, lineThickness)
                     #####################
+
             cv2.imshow("Result", image)
 
             key = cv2.waitKey(1) & 0xFF
@@ -91,7 +92,7 @@ class Detector:
 
 
 
-videoPath = "videos/trafic_road.mp4"
+videoPath = "videos/street.mp4"
 configPath = os.path.join("model_data", "ssd_mobilenet_v3_large_coco_2020_01_14.pbtxt")
 modelPath = os.path.join("model_data", "frozen_inference_graph.pb")
 classesPath = os.path.join("model_data", "coco.names")
