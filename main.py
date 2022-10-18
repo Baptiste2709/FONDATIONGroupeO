@@ -17,7 +17,7 @@ cap = cv2.VideoCapture(0)
 
 #Fonction permettant la localisation des marqueurs arUco
 #En precisant leur distance par rapport à la caméra, leur coordonnées et leurs ids
-def findArucoMarkers(frame, gray, markerSize = 6, totalMarkers = 250):
+def findArucoMarkers(frame, gray, markerSize = 5, totalMarkers = 250):
     key = getattr(aruco, f'DICT_{markerSize}X{markerSize}_{totalMarkers}')
     arucoDict = aruco.Dictionary_get(key)
     arucoParam = aruco.DetectorParameters_create()
@@ -47,11 +47,9 @@ def findArucoMarkers(frame, gray, markerSize = 6, totalMarkers = 250):
 def main():
     while True:
         _, frame = cap.read()
-        copyFrame = frame.copy()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         findArucoMarkers(frame, gray)
         cv2.imshow("Camera", frame)
-        cv2.imshow("CameraCopy", copyFrame)
 
 
         if cv2.waitKey(1) == ord('a'):

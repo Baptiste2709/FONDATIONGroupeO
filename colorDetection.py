@@ -8,8 +8,11 @@ upper_blue = np.array([140, 255, 255])
 lower_green = np.array([45, 100, 20])
 upper_green = np.array([80, 255, 255])
 #RED
-lower_red = np.array([0, 125, 20])
-upper_red = np.array([8, 255, 255])
+lower_d_red = np.array([0, 125, 20])
+upper_d_red = np.array([8, 255, 255])
+
+lower_red = np.array([168, 150, 20])
+upper_red = np.array([180, 255, 255])
 #YELLOW
 lower_yellow = np.array([25, 100, 20])
 upper_yellow = np.array([35, 255, 255])
@@ -24,11 +27,13 @@ while True:
     #Creation des différents masques
     blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
     green_mask = cv2.inRange(hsv, lower_green, upper_green)
+    d_red_mask = cv2.inRange(hsv, lower_d_red, upper_d_red)
     red_mask = cv2.inRange(hsv, lower_red, upper_red)
     yellow_mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
     #Recherche des contours des différentes couleurs
     blue_contours, hierarchy = cv2.findContours(blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     green_contours, hierarchy = cv2.findContours(green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    d_red_contours, hierarchy = cv2.findContours(d_red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     red_contours, hierarchy = cv2.findContours(red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     yellow_contours, hierarchy = cv2.findContours(yellow_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     #Creation et affichage des rectangles pour chaque couleurs
@@ -42,6 +47,11 @@ while True:
             if cv2.contourArea(contour) > 500:
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.rectangle(frame, (x,y), (x + w, y + w), (0, 255, 0), 2)
+    if len(d_red_contours) != 0:
+        for contour in d_red_contours:
+            if cv2.contourArea(contour) > 500:
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(frame, (x,y), (x + w, y + w), (0, 0, 255), 2)
     if len(red_contours) != 0:
         for contour in red_contours:
             if cv2.contourArea(contour) > 500:
@@ -57,6 +67,7 @@ while True:
     cv2.imshow("Camera", frame)
     cv2.imshow("blueMask", blue_mask)
     cv2.imshow("greenMask", green_mask)
+    cv2.imshow("dredMask", d_red_mask)
     cv2.imshow("redMask", red_mask)
     cv2.imshow("yellowMask", yellow_mask)
     #Commande d'arret de code
