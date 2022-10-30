@@ -87,6 +87,7 @@ n = 0
 #Boucle while
 while True:
     _, frame = cap.read()
+    frame = cv2.flip(frame, 1)
     copyFrame = frame.copy()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     image, board_detected = detectChessBoard(frame, gray, criteria, CHESS_BOARD_DIM)

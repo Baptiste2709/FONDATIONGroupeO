@@ -4,7 +4,6 @@ from math import hypot
 import screen_brightness_control as sbc
 import numpy as np
 
-# Initializing the Model
 mpHands = mp.solutions.hands
 hands = mpHands.Hands(
     static_image_mode=False,
@@ -15,24 +14,18 @@ hands = mpHands.Hands(
 
 Draw = mp.solutions.drawing_utils
 
-# Start capturing video from webcam
+
 cap = cv2.VideoCapture(0)
 
 while True:
-    # Read video frame by frame
     _, frame = cap.read()
-
-    # Flip image
     frame = cv2.flip(frame, 1)
 
-    # Convert BGR image to RGB image
     frameRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    # Process the RGB image
     Process = hands.process(frameRGB)
 
     landmarkList = []
-    # if hands are present in image(frame)
     if Process.multi_hand_landmarks:
         # detect handmarks
         for handlm in Process.multi_hand_landmarks:
@@ -72,7 +65,7 @@ while True:
         # with given discrete data points
         # (Hand range 15 - 220, Brightness
         # range 0 - 100), evaluated at length.
-        b_level = np.interp(L, [15, 220], [0, 100])
+        b_level = np.interp(L, [25, 200], [0, 100])
 
         # set brightness
         sbc.set_brightness(int(b_level))
@@ -83,3 +76,5 @@ while True:
     if cv2.waitKey(1) & 0xff == ord('a'):
         break
 
+cap.release()
+cv2.destroyAllWindows()

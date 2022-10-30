@@ -16,6 +16,7 @@ with mp_objectron.Objectron(static_image_mode=False,
         start = time.time()
 
         _, frame = cap.read()
+        frame = cv2.flip(frame, 1)
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 

@@ -47,6 +47,7 @@ def findArucoMarkers(frame, gray, markerSize = 6, totalMarkers = 250):
 def main():
     while True:
         _, frame = cap.read()
+        frame = cv2.flip(frame, 1)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         findArucoMarkers(frame, gray)
         cv2.imshow("Camera", frame)

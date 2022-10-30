@@ -32,6 +32,7 @@ cap = cv2.VideoCapture(0)
 #Boucle while
 while True:
     success, frame = cap.read()
+    frame = cv2.flip(frame, 1)
     frame = cv2.resize(frame, (500, 300), cv2.INTER_AREA)
     #Passage d'un code couleur Blue_Green_Red à Hue_Saturation_Value
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
